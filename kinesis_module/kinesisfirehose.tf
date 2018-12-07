@@ -1,9 +1,4 @@
-provider "aws" {
-  region  = "us-east-1"
-  profile = "devops"
-}
-
-resource "aws_kinesis_firehose_delivery_stream" "aws-waf-logs-devops" {
+resource "aws_kinesis_firehose_delivery_stream" "aws-waf-logs" {
   name        = "${var.waf_kinesis_name}"
   destination = "splunk"
 
