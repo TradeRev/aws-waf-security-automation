@@ -1,5 +1,5 @@
 resource "aws_iam_role" "waf_kinesis_firehose_role" {
-  name        = "waf-kinesis-role"
+  name        = "${var.waf-kinesis-role-name}"
   description = "Allows Kinesis Firehose to transform and deliver data to your destinations using CloudWatch Logs, Lambda, and S3 on your behalf."
 
   assume_role_policy = <<EOF
@@ -19,7 +19,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "waf_kinesis_firehose_role_policy" {
-  name   = "waf-kinesis-policy"
+  name   = "${var.waf-kinesis-firehose-policy}"
   role   = "${aws_iam_role.waf_kinesis_firehose_role.id}"
   policy = "${file("${path.module}/inline-policy.json")}"
 }

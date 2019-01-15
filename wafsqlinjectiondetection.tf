@@ -15,7 +15,7 @@
 ###############################################################################
 
 resource "aws_waf_sql_injection_match_set" "WAFSqlInjectionDetection" {
-    name = "${var.customer} - SQL Injection Detection"
+    name = "${var.waf-name} - SQL Injection Detection"
 
     sql_injection_match_tuples {
         text_transformation = "URL_DECODE"

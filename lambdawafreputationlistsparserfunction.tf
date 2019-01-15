@@ -15,14 +15,15 @@
 ###############################################################################
 
 resource "aws_lambda_function" "LambdaWAFReputationListsParserFunction" {
-    depends_on = ["aws_s3_bucket_object.ReputationListsParserZip"]
-    function_name = "${var.customer}-LambdaWAFReputationListsParserFunction-${element(split("-",uuid()),0)}"
+    #depends_on = ["aws_s3_bucket_object.ReputationListsParserZip"]
+    function_name = "${var.customer}-LambdaWAFReputationListsParserFunction"
     description = "This lambda function checks third-party IP reputation lists hourly for new IP ranges to block. These lists include the Spamhaus Dont Route Or Peer (DROP) and Extended Drop (EDROP) lists, the Proofpoint Emerging Threats IP list, and the Tor exit node list."
     role = "${aws_iam_role.LambdaRoleReputationListsParser.arn}"
     handler = "reputation-lists-parser.handler"
-    s3_bucket = "${var.customer}-waflambdafiles"
-    s3_key = "reputation-lists-parser.zip"
-    runtime = "nodejs4.3"
+    #s3_bucket = "${var.customer}-waflambdafiles"
+    #s3_key = "reputation-lists-parser.zip"
+    filename = "${path.module}/${var.rep-list-lambda-path}"
+    runtime = "nodejs8.10"
     memory_size = "128"
     timeout = "300"
     environment {
@@ -39,5 +40,10 @@ resource "aws_lambda_function" "LambdaWAFReputationListsParserFunction" {
             WAFBlockPeriod = "${var.WAFBlockPeriod}"
             SendAnonymousUsageData = "${var.SendAnonymousUsageData}"
         }
+    }
+
+    tags{
+        Name = "WAF Security Automations"
+        Enviroment = "nthgendevops"
     }
 }

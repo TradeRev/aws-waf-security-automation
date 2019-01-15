@@ -15,13 +15,14 @@
 ###############################################################################
 
 resource "aws_lambda_function" "LambdaWAFBadBotParserFunction" {
-    depends_on = ["aws_s3_bucket_object.AccessHandlerZip"]
-    function_name = "${var.customer}-LambdaWAFBadBotParserFunction-${element(split("-",uuid()),0)}"
+    #depends_on = ["aws_s3_bucket_object.AccessHandlerZip"]
+    function_name = "${var.customer}-LambdaWAFBadBotParserFunction"
     description = "This lambda function will intercepts and inspects trap endpoint requests to extract its IP address, and then add it to an AWS WAF block list."
     role = "${aws_iam_role.LambdaRoleBadBot.arn}"
     handler = "access-handler.lambda_handler"
-    s3_bucket = "${var.customer}-waflambdafiles"
-    s3_key = "access-handler.zip"
+    #s3_bucket = "${var.customer}-waflambdafiles"
+    #s3_key = "access-handler.zip"
+    filename = "${path.module}/${var.bad-bot-parser-lambda-path}"
     runtime = "python2.7"
     memory_size = "128"
     timeout = "300"
@@ -41,5 +42,10 @@ resource "aws_lambda_function" "LambdaWAFBadBotParserFunction" {
             SendAnonymousUsageData = "${var.SendAnonymousUsageData}"
             UUID = "${uuid()}"
         }
+    }
+
+    tags {
+        Name = "WAF Security Automations"
+        Enviroment = "nthgendevops"
     }
 }

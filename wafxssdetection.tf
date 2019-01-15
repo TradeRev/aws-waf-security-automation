@@ -15,7 +15,7 @@
 ###############################################################################
 
 resource "aws_waf_xss_match_set" "WAFXssDetection" {
-    name = "${var.customer} - XSS Detection Detection"
+    name = "${var.waf-name} - XSS Detection Detection"
     xss_match_tuples {
         text_transformation = "URL_DECODE"
         field_to_match {
