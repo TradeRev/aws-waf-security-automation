@@ -15,15 +15,10 @@
 ###############################################################################
 
 resource "aws_lambda_function" "SolutionHelper" {
-    #depends_on = ["aws_s3_bucket_object.SolutionHelperZip"]
-    function_name = "${var.customer}-SolutionHelper"
+    function_name = "${var.customer}-SolutionHelper-${element(split("-",uuid()),0)}"
     description = "This lambda function executes generic common tasks to support this solution."
     role = "${aws_iam_role.SolutionHelperRole.arn}"
     handler = "log-parser.lambda_handler"
-    #s3_bucket = "solutions-${var.aws_region}"
-    #s3_key = "library/solution-helper/v1/solution-helper.zip"
-    #s3_bucket = "${var.customer}-waflambdafiles"
-    #s3_key = "solution-helper.zip"
     filename = "${path.module}/${var.solutionhelper-lambda-path}"
     runtime = "python2.7"
     timeout = "300"

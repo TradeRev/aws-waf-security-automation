@@ -10,7 +10,6 @@ variable "splunk_hec_endpoint" {
 
 variable "splunk_hec_token" {
   type = "string"
-  default = "D1ABC097-FC14-4988-9E07-E7CEAB878F22"
 }
 
 variable "waf_kinesis_name" {
@@ -26,11 +25,6 @@ variable "s3_bucket_name" {
 variable "logging_bucket_name" {
   type = "string"
   default = "tr-waf-logging-bucket"
-}
-
-variable "aws-account-id" {
-  type = "string"
-  default = "082894742960"
 }
 
 variable "waf-kinesis-role-name" {

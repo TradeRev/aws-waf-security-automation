@@ -7,7 +7,7 @@ provider "aws" {
 
 variable "customer" {
   description = "[REQUIRED] Customer/Project Name (max 15 characters):"
-  default     = "tr-waf-sec-auto"
+  default     = "tr-waf-"
 }
 
 variable "waf-name" {

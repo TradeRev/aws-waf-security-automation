@@ -15,13 +15,10 @@
 ###############################################################################
 
 resource "aws_lambda_function" "LambdaWAFCustomResourceFunction" {
-    #depends_on = ["aws_s3_bucket_object.CustomResourceZip"]
-    function_name = "${var.customer}-LambdaWAFCustomResourceFunction"
+    function_name = "${var.customer}-LambdaWAFCustomResourceFunction-${element(split("-",uuid()),0)}"
     description = "This lambda function configures the Web ACL rules based on the features enabled in the CloudFormation template. Parameters: yes"
     role = "${aws_iam_role.LambdaRoleCustomResource.arn}"
     handler = "custom-resource.lambda_handler"
-    #s3_bucket = "${var.customer}-waflambdafiles"
-    #s3_key = "custom-resource.zip"
     filename = "${path.module}/${var.custom-resource-lambda-path}"
     runtime = "python2.7"
     memory_size = "128"
