@@ -4,6 +4,7 @@ resource "aws_s3_bucket" "WAFCloudfrontAccessLog" {
 
   tags{
     Name = "WAF Security Automations"
-    Enviroment = "nthgendevops"
+    Region = "${data.aws_region.current_region.name}"
+    Application = "${var.application}"
   }
 }

@@ -1,6 +1,4 @@
 provider "aws" {
-  # *** Change ONLY THIS LINE: ***
-  #shared_credentials_file  = "/Users/emilyliu/.aws/credentials"
   region = "${var.aws_region}"
 }
 
@@ -24,7 +22,6 @@ variable "CloudFrontAccessLogBucket" {
 # CUSTOM VARIABLES - TUNNING WAF #
 #   BE CAREFUL, MASSIVE IMPACT   #
 ##################################
-#default = "50"
 variable "ErrorThreshold" {
   default = "50"
 }
@@ -81,6 +78,7 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
+data "aws_region" "current_region" {}
 
 
 ###############################################################################
@@ -91,4 +89,10 @@ output "account_id" {
   value = "${data.aws_caller_identity.current.account_id}"
 }
 
-
+###############################################################################
+#Application
+###############################################################################
+variable "application" {
+  description = "The software use to provision the infrastructure"
+  default = "Terraform"
+}

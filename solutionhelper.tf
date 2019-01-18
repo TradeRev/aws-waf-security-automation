@@ -40,6 +40,7 @@ resource "aws_lambda_function" "SolutionHelper" {
 
     tags {
         Name = "WAF Security Automations"
-        Enviroment = "nthgendevops"
+        Region = "${data.aws_region.current_region.name}"
+        Application = "${var.application}"
     }
 }
