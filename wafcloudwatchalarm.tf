@@ -88,3 +88,16 @@ resource "aws_cloudwatch_metric_alarm" "cw-xss-rule" {
   alarm_description = "This metric measure the amount of hits from the WAF for ips listed on the XSS Rule"
   alarm_actions = ["${aws_sns_topic.Alert_CW_WAF_Rule.arn}"]
 }
+
+resource "aws_cloudwatch_metric_alarm" "cw-http-flood" {
+  alarm_name = "HTTP Flood Alarm"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods = 1
+  metric_name = "AllowedRequests"
+  namespace = "AWS/WAF"
+  period = 300
+  threshold = 2000
+  statistic = "SampleCount"
+  alarm_description = "This metric measure the amount of hits from the WAF for ips listed on the XSS Rule"
+  alarm_actions = ["${aws_sns_topic.Alert_CW_WAF_Rule.arn}"]
+}

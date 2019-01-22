@@ -1,6 +1,6 @@
 resource "aws_waf_rate_based_rule" "BrokenAuthSessionManageRule" {
   metric_name = "BrokenAuthSessionManageMetric"
-  name = "BrokenAuthSessionManageRule"
+  name = "${var.waf-name} - BrokenAuthSessionManageRule"
   rate_key = "IP"
   rate_limit = 2000
 

@@ -46,6 +46,14 @@ resource "aws_waf_web_acl" "WAFWebACL" {
         action {
             type = "BLOCK"
         }
+        priority = 35
+        rule_id = "${aws_waf_rate_based_rule.http-flood-rule-1.id}"
+        type = "RATE_BASED"
+    }
+    rules {
+        action {
+            type = "BLOCK"
+        }
         priority = 40
         rule_id = "${aws_waf_rule.WAFIPReputationListsRule1.id}"
     }
