@@ -16,7 +16,7 @@
 
 resource "aws_cloudwatch_event_rule" "LambdaWAFReputationListsParserEventsRule" {
     depends_on = ["aws_lambda_function.LambdaWAFReputationListsParserFunction", "aws_waf_ipset.WAFReputationListsSet1", "aws_waf_ipset.WAFReputationListsSet2"]
-    name = "${var.customer}-LambdaWAFReputationListsParserEventsRule-${element(split("-",uuid()),0)}"
+    name = "${var.customer}-LambdaWAFReputationListsParserEventsRule"
     description = "Security Automations - WAF Reputation Lists"
     schedule_expression = "rate(1 hour)"
 }

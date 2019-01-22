@@ -38,11 +38,11 @@ variable "CloudFrontAccessLogBucket" {
 ##################################
 #default = "50"
 variable "ErrorThreshold" {
-    default = "500"
+    default = "50"
 }
 #default = "400"
 variable "RequestThreshold" {
-    default = "800"
+    default = "400"
 }
 variable "WAFBlockPeriod" {
     default = "240"

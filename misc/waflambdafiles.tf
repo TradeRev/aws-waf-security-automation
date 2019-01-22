@@ -20,7 +20,6 @@ resource "aws_s3_bucket" "WAFLambdaFiles" {
 
     tags {
         Name = "WAF Lambda Files"
-        Environment = "Production"
     }
 }
 resource "aws_s3_bucket_object" "LogParserZip" {

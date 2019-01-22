@@ -16,7 +16,7 @@
 
 resource "aws_waf_web_acl" "WAFWebACL" {
     depends_on = ["aws_waf_rule.WAFWhitelistRule", "aws_waf_rule.WAFBlacklistRule", "aws_waf_rule.WAFAutoBlockRule", "aws_waf_rule.WAFIPReputationListsRule1", "aws_waf_rule.WAFIPReputationListsRule2", "aws_waf_rule.WAFBadBotRule", "aws_waf_rule.WAFSqlInjectionRule", "aws_waf_rule.WAFXssRule"]
-    name = "${var.customer}"
+    name = "${var.waf-name}"
     metric_name = "SecurityAutomationsMaliciousRequesters"
     default_action {
         type = "ALLOW"
@@ -76,5 +76,45 @@ resource "aws_waf_web_acl" "WAFWebACL" {
         }
         priority = 80
         rule_id = "${aws_waf_rule.WAFXssRule.id}"
+    }
+    rules {
+        action {
+            type="BLOCK"
+        }
+        priority = 90
+        rule_id = "${aws_waf_rate_based_rule.BrokenAuthSessionManageRule.id}"
+        type = "RATE_BASED"
+    }
+
+    provisioner "local-exec" {
+        command = "aws cloudwatch put-metric-data --namespace WAF --metric-name WhitelistRule --unit Count --value 0 --dimensions Rule=${aws_waf_rule.WAFWhitelistRule.metric_name},WebACL=${aws_waf_web_acl.WAFWebACL.metric_name}"
+    }
+
+    provisioner "local-exec" {
+        command = "aws cloudwatch put-metric-data --namespace WAF --metric-name BlacklistRule --unit Count --value 0 --dimensions Rule=${aws_waf_rule.WAFBlacklistRule.metric_name},WebACL=${aws_waf_web_acl.WAFWebACL.metric_name}"
+    }
+
+    provisioner "local-exec" {
+        command = "aws cloudwatch put-metric-data --namespace WAF --metric-name AutoBlockRule --unit Count --value 0 --dimensions Rule=${aws_waf_rule.WAFAutoBlockRule.metric_name},WebACL=${aws_waf_web_acl.WAFWebACL.metric_name}"
+    }
+
+    provisioner "local-exec" {
+        command = "aws cloudwatch put-metric-data --namespace WAF --metric-name IPReputationList1 --unit Count --value 0 --dimensions Rule=${aws_waf_rule.WAFIPReputationListsRule1.metric_name},WebACL=${aws_waf_web_acl.WAFWebACL.metric_name}"
+    }
+
+    provisioner "local-exec" {
+        command = "aws cloudwatch put-metric-data --namespace WAF --metric-name IPReputationList2 --unit Count --value 0 --dimensions Rule=${aws_waf_rule.WAFIPReputationListsRule2.metric_name},WebACL=${aws_waf_web_acl.WAFWebACL.metric_name}"
+    }
+
+    provisioner "local-exec" {
+        command = "aws cloudwatch put-metric-data --namespace WAF --metric-name BadBotRule --unit Count --value 0 --dimensions Rule=${aws_waf_rule.WAFBadBotRule.metric_name},WebACL=${aws_waf_web_acl.WAFWebACL.metric_name}"
+    }
+
+    provisioner "local-exec" {
+        command = "aws cloudwatch put-metric-data --namespace WAF --metric-name SQLInjectionRule --unit Count --value 0 --dimensions Rule=${aws_waf_rule.WAFSqlInjectionRule.metric_name},WebACL=${aws_waf_web_acl.WAFWebACL.metric_name}"
+    }
+
+    provisioner "local-exec" {
+        command = "aws cloudwatch put-metric-data --namespace WAF --metric-name XSSRule --unit Count --value 0 --dimensions Rule=${aws_waf_rule.WAFXssRule.metric_name},WebACL=${aws_waf_web_acl.WAFWebACL.metric_name}"
     }
 }

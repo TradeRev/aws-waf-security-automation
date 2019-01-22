@@ -15,15 +15,11 @@
 ###############################################################################
 
 resource "aws_lambda_function" "LambdaWAFLogParserFunction" {
-    depends_on = ["aws_s3_bucket_object.LogParserZip"]
     function_name = "${var.customer}-LambdaWAFLogParserFunction-${element(split("-",uuid()),0)}"
     description = "This function parses CloudFront access logs to identify suspicious behavior, such as an abnormal amount of requests or errors. It then blocks those IP addresses for a customer-defined period of time."
     role = "${aws_iam_role.LambdaRoleLogParser.arn}"
     handler = "log-parser.lambda_handler"
-    #s3_bucket = "solutions-${var.aws_region}"
-    #s3_key = "aws-waf-security-automations/v1/log-parser.zip"
-    s3_bucket = "${var.customer}-waflambdafiles"
-    s3_key = "log-parser.zip"
+    filename = "${path.module}/${var.log-parser-lambda-path}"
     runtime = "python2.7"
     memory_size = "512"
     timeout = "300"
@@ -44,5 +40,11 @@ resource "aws_lambda_function" "LambdaWAFLogParserFunction" {
             SendAnonymousUsageData = "${var.SendAnonymousUsageData}"
             UUID = "${uuid()}"
         }
+    }
+
+    tags {
+        Name = "WAF Security Automations"
+        Region = "${data.aws_region.current_region.name}"
+        Application = "${var.application}"
     }
 }
