@@ -16,7 +16,7 @@ Added cloudwatch alarms for all rules (Exception whitelist) that will be trigger
 | WAF Rule         | Threshold              |
 |------------------|------------------------|
 | Blacklist        | 5 hits in 5 minutes    |
-| HTTP Flood       | 2000 hots in 5 minutes |  
+| HTTP Flood       | 2000 hits in 5 minutes |  
 | Scan Probes      | 5 hits in one day      |
 | Reputation list 1| 5 hits in 5 minutes    |
 | Reputation list 2| 5 hits in 5 minutes    |
