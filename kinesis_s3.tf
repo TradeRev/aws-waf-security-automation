@@ -7,6 +7,15 @@ resource "aws_s3_bucket" "waf-logging-bucket" {
     Region = "${data.aws_region.current_region.name}"
     Application = "${var.application}"
   }
+
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+    }
+  }
+
 }
 
 resource "aws_s3_bucket" "waf_kinesis_bucket" {
@@ -23,6 +32,15 @@ resource "aws_s3_bucket" "waf_kinesis_bucket" {
     Region = "${data.aws_region.current_region.name}"
     Application = "${var.application}"
   }
+
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+    }
+  }
+
 }
 
 
