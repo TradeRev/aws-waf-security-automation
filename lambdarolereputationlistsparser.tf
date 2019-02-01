@@ -113,3 +113,21 @@ resource "aws_iam_role_policy" "LambdaRoleReputationListsParserCloudWatchAccess"
 }
 EOF
 }
+resource "aws_iam_role_policy" "LambdaRoleReputationListsParserCloudformationStackAccess" {
+    name = "${var.customer}-LambdaRoleReputationListsParserCloudformationStackAccess"
+    role = "${aws_iam_role.LambdaRoleReputationListsParser.id}"
+    policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "cloudformation:DescribeStacks",
+            "Resource": [
+              "arn:aws:cloudformation::${data.aws_caller_identity.current.account_id}:stack/${var.customer}/*"
+            ]
+        }
+    ]
+}
+EOF
+}
